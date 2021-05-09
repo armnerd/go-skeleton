@@ -10,11 +10,11 @@ require (
 	github.com/idoubi/goz v1.0.0
 	github.com/jinzhu/gorm v1.9.14
 	github.com/joho/godotenv v1.3.0
-	github.com/segmentio/kafka-go v0.4.15 // indirect
+	github.com/segmentio/kafka-go v0.4.15
 	github.com/sirupsen/logrus v1.6.0
-	github.com/streadway/amqp v1.0.0 // indirect
+	github.com/streadway/amqp v1.0.0
 	github.com/tidwall/gjson v1.6.0
 	github.com/tidwall/pretty v1.0.1 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
