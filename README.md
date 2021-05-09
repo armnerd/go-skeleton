@@ -5,8 +5,9 @@
 ## Run
 
 ```bash
-mkdir runtime && cd runtime && touch log
+mkdir runtime
 go build main.go
+./main
 ```
 
 ## Lib

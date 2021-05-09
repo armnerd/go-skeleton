@@ -2,13 +2,14 @@ package rabbitmq
 
 import (
 	"fmt"
-	"github.com/armnerd/go-skeleton/config"
 	"time"
+
+	"github.com/armnerd/go-skeleton/config"
 
 	"github.com/streadway/amqp"
 )
 
-func Receive(appid string, topic string, msgCount int) (res []string) {
+func Receive(queue string, msgCount int) (res []string) {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Printf("recover:%v\n", err)
@@ -29,30 +30,30 @@ func Receive(appid string, topic string, msgCount int) (res []string) {
 	defer ch.Close()
 
 	err = ch.ExchangeDeclare(
-		"kungeek_direct", // name
-		"direct",         // type
-		true,             // durable
-		false,            // auto-deleted
-		false,            // internal
-		false,            // no-wait
-		nil,              // arguments
+		"exchange_direct", // name
+		"direct",          // type
+		true,              // durable
+		false,             // auto-deleted
+		false,             // internal
+		false,             // no-wait
+		nil,               // arguments
 	)
 	failOnError(err, "Failed to declare an exchange")
 
 	q, err := ch.QueueDeclare(
-		appid+":"+topic, // name
-		true,            // durable
-		false,           // delete when unused
-		false,           // exclusive
-		false,           // no-wait
-		nil,             // arguments
+		queue, // name
+		true,  // durable
+		false, // delete when unused
+		false, // exclusive
+		false, // no-wait
+		nil,   // arguments
 	)
 	failOnError(err, "Failed to declare a queue")
 
 	err = ch.QueueBind(
-		q.Name,           // queue name
-		topic,            // routing key
-		"kungeek_direct", // exchange
+		q.Name,            // queue name
+		queue,             // routing key
+		"exchange_direct", // exchange
 		false,
 		nil)
 	failOnError(err, "Failed to bind a queue")

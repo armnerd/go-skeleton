@@ -1,13 +1,14 @@
 package rabbitmq
 
 import (
-	"github.com/armnerd/go-skeleton/config"
 	"log"
+
+	"github.com/armnerd/go-skeleton/config"
 
 	"github.com/streadway/amqp"
 )
 
-func Send(topic string, body string) {
+func Send(queue string, body string) {
 	// 获取参数
 	host := config.RabbitMQConfig.Host
 	port := config.RabbitMQConfig.Port
@@ -22,21 +23,21 @@ func Send(topic string, body string) {
 	defer ch.Close()
 
 	err = ch.ExchangeDeclare(
-		"kungeek_direct", // name
-		"direct",         // type
-		true,             // durable
-		false,            // auto-deleted
-		false,            // internal
-		false,            // no-wait
-		nil,              // arguments
+		"exchange_direct", // name
+		"direct",          // type
+		true,              // durable
+		false,             // auto-deleted
+		false,             // internal
+		false,             // no-wait
+		nil,               // arguments
 	)
 	failOnError(err, "Failed to declare an exchange")
 
 	err = ch.Publish(
-		"kungeek_direct", // exchange
-		topic,            // routing key
-		false,            // mandatory
-		false,            // immediate
+		"exchange_direct", // exchange
+		queue,             // routing key
+		false,             // mandatory
+		false,             // immediate
 		amqp.Publishing{
 			ContentType:  "text/plain",
 			Body:         []byte(body),
