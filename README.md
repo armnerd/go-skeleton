@@ -23,4 +23,4 @@ go build main.go
 |   鉴权   |   jwt-go    |   https://github.com/dgrijalva/jwt-go  |
 |   Kafka   |   kafka-go    |   https://github.com/segmentio/kafka-go  |
 |   RabbitMq   |   amqp    |   https://github.com/streadway/amqp  |
-|   Etcd   |   etcd    |   github.com/coreos/etcd/clientv3 |
+|   Etcd   |   etcd    |   https://github.com/coreos/etcd/clientv3 |
