@@ -1,10 +1,10 @@
 package test
 
 import (
-	cache "github.com/armnerd/go-skeleton/pkg/redis"
 	auth "github.com/armnerd/go-skeleton/pkg/auth"
 	curl "github.com/armnerd/go-skeleton/pkg/curl"
 	syslog "github.com/armnerd/go-skeleton/pkg/log"
+	cache "github.com/armnerd/go-skeleton/pkg/redis"
 	response "github.com/armnerd/go-skeleton/pkg/response"
 
 	"github.com/gin-gonic/gin"
@@ -58,7 +58,7 @@ func CurlPost(c *gin.Context) {
 		"id": "95",
 	}
 	header := map[string]interface{}{}
-	content, err := curl.Post(url, data, header)
+	content, err := curl.PostForm(url, data, header)
 	if err != nil {
 		response.Fail(c, response.RequestFail)
 	}

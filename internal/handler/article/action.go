@@ -1,8 +1,6 @@
 package article
 
 import (
-	article "github.com/armnerd/go-skeleton/internal/logic/article"
-	response "github.com/armnerd/go-skeleton/pkg/response"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -10,6 +8,9 @@ import (
 	"math"
 	"strconv"
 	"strings"
+
+	"github.com/armnerd/go-skeleton/internal/logic/article"
+	"github.com/armnerd/go-skeleton/pkg/response"
 
 	elasticsearch "github.com/elastic/go-elasticsearch/v8"
 	"github.com/elastic/go-elasticsearch/v8/esapi"

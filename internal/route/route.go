@@ -4,7 +4,6 @@ import (
 	"github.com/armnerd/go-skeleton/internal/handler/article"
 	"github.com/armnerd/go-skeleton/internal/handler/mail"
 	"github.com/armnerd/go-skeleton/internal/handler/test"
-	"github.com/armnerd/go-skeleton/internal/handler/word"
 	"github.com/armnerd/go-skeleton/internal/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -27,26 +26,14 @@ func Init() *gin.Engine {
 		})
 	})
 
-	// 文章列表
-	api.POST("/article/list", article.List)
-	// 同步文章
-	api.POST("/article/es/sync", article.Sync)
-	// 搜索文章
-	api.POST("/article/es/search", article.Search)
-	// 新增文章
-	api.POST("/article/add", middleware.AuthRequired(), article.Add)
-	// 编辑文章
-	api.POST("/article/edit", middleware.AuthRequired(), article.Edit)
-	// 文章详情
-	api.POST("/article/info", article.Info)
-
-	// 单词列表
-	api.POST("/sherlock", word.List)
-	// 单词详情
-	api.POST("/vocabulary", word.Info)
-
-	// 留言
-	api.POST("/feedback", mail.Add)
+	// Blog
+	api.POST("/article/list", article.List)                            // 文章列表
+	api.POST("/article/info", article.Info)                            // 文章详情
+	api.POST("/article/add", middleware.AuthRequired(), article.Add)   // 新增文章
+	api.POST("/article/edit", middleware.AuthRequired(), article.Edit) // 编辑文章
+	api.POST("/article/es/sync", article.Sync)                         // 同步文章
+	api.POST("/article/es/search", article.Search)                     // 搜索文章
+	api.POST("/feedback", mail.Add)                                    // 留言
 
 	// Redis
 	api.POST("/cache/set", test.SetCache)
