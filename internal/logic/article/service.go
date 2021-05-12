@@ -1,7 +1,7 @@
 package article
 
 import (
-	article "github.com/armnerd/go-skeleton/internal/data/article"
+	"github.com/armnerd/go-skeleton/internal/data/article"
 )
 
 // List 文章列表

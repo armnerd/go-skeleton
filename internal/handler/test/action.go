@@ -1,11 +1,11 @@
 package test
 
 import (
-	auth "github.com/armnerd/go-skeleton/pkg/auth"
-	curl "github.com/armnerd/go-skeleton/pkg/curl"
+	"github.com/armnerd/go-skeleton/pkg/auth"
+	"github.com/armnerd/go-skeleton/pkg/curl"
 	syslog "github.com/armnerd/go-skeleton/pkg/log"
 	cache "github.com/armnerd/go-skeleton/pkg/redis"
-	response "github.com/armnerd/go-skeleton/pkg/response"
+	"github.com/armnerd/go-skeleton/pkg/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
