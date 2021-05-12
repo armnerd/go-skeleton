@@ -17,20 +17,22 @@ var AlertEmailList = []string{
 
 type Kafka struct {
 	Broker []string
-	Topic  map[string]string
 }
 
 var KafkaConfig Kafka
 
+var KafkaTopic map[string]string
+
 type RabbitMQ struct {
-	Host  string
-	Port  string
-	User  string
-	Pass  string
-	Queue map[string]string
+	Host string
+	Port string
+	User string
+	Pass string
 }
 
 var RabbitMQConfig RabbitMQ
+
+var RabbitMQQueue map[string]string
 
 func init() {
 	if os.Getenv("GIN_MODE") == "release" {
@@ -38,37 +40,33 @@ func init() {
 			[]string{
 				"127.0.0.1:9092",
 			},
-			map[string]string{
-				"topic": "topic",
-			},
 		}
 		RabbitMQConfig = RabbitMQ{
 			"localhost",
 			"5672",
 			"guest",
 			"guest",
-			map[string]string{
-				"queue": "queue",
-			},
 		}
 	} else {
 		KafkaConfig = Kafka{
 			[]string{
 				"127.0.0.1:9092",
 			},
-			map[string]string{
-				"topic": "topic",
-			},
 		}
 		RabbitMQConfig = RabbitMQ{
 			"localhost",
 			"5672",
 			"guest",
 			"guest",
-			map[string]string{
-				"queue": "queue",
-			},
 		}
+	}
+
+	KafkaTopic = map[string]string{
+		"topic": "topic",
+	}
+
+	RabbitMQQueue = map[string]string{
+		"queue": "queue",
 	}
 
 	MailConfig = EmailConfig{
