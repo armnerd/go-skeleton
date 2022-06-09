@@ -14,6 +14,9 @@ mkdir runtime
 // 构建
 go build main.go
 
+// 构建时指定 CPU 核心数量
+go build -ldflags "-X main.SetCpuCount=1" main.go
+
 // 获取运行参数
 ./main server -h
 
