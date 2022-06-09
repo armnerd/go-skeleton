@@ -1,4 +1,4 @@
-package test
+package demo
 
 import (
 	"github.com/armnerd/go-skeleton/pkg/auth"
@@ -11,7 +11,7 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-// SetCache redis插入
+// SetCache redis 插入
 func SetCache(c *gin.Context) {
 	// 参数验证
 	key := c.DefaultPostForm("key", "")
@@ -24,7 +24,7 @@ func SetCache(c *gin.Context) {
 	response.Succuss(c, res)
 }
 
-// GetCache redis插入
+// GetCache redis 读取
 func GetCache(c *gin.Context) {
 	// 参数验证
 	key := c.DefaultPostForm("key", "")

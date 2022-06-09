@@ -49,6 +49,18 @@ swag init
 
 http://127.0.0.1:9551/swagger/index.html
 
+## Test
+
+```bash
+go get github.com/smartystreets/goconvey
+
+cd test/redis
+go test -v
+
+cd test/curl
+goconvey
+```
+
 ## Lib
 
 |   Role   |   Package   |   Link   |
@@ -65,8 +77,3 @@ http://127.0.0.1:9551/swagger/index.html
 |   Kafka   |   kafka-go    |   https://github.com/segmentio/kafka-go  |
 |   RabbitMq   |   amqp    |   https://github.com/streadway/amqp  |
 |   Etcd   |   etcd    |   https://github.com/coreos/etcd/clientv3 |
-
-## Undo
-
-* 链路追踪 jaeger / zipkin
-* 单元测试 test

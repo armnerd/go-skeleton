@@ -3,8 +3,8 @@ package route
 import (
 	_ "github.com/armnerd/go-skeleton/docs"
 	"github.com/armnerd/go-skeleton/internal/handler/article"
+	"github.com/armnerd/go-skeleton/internal/handler/demo"
 	"github.com/armnerd/go-skeleton/internal/handler/mail"
-	"github.com/armnerd/go-skeleton/internal/handler/test"
 	"github.com/armnerd/go-skeleton/internal/middleware"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -42,16 +42,16 @@ func Init() *gin.Engine {
 	api.POST("/feedback", mail.Add)                                    // 留言
 
 	// Redis
-	api.POST("/cache/set", test.SetCache)
-	api.POST("/cache/get", test.GetCache)
+	api.POST("/cache/set", demo.SetCache)
+	api.POST("/cache/get", demo.GetCache)
 
 	// Curl
-	api.GET("/curl/get", test.CurlGet)
-	api.GET("/curl/post", test.CurlPost)
+	api.GET("/curl/get", demo.CurlGet)
+	api.GET("/curl/post", demo.CurlPost)
 
 	// Jwt
-	api.GET("/jwt/login", test.Login)
-	api.GET("/jwt/auth", middleware.AuthRequired(), test.Auth)
+	api.GET("/jwt/login", demo.Login)
+	api.GET("/jwt/auth", middleware.AuthRequired(), demo.Auth)
 
 	return app
 }

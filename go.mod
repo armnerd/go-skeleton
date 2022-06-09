@@ -21,6 +21,7 @@ require (
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/segmentio/kafka-go v0.4.15
 	github.com/sirupsen/logrus v1.6.0
+	github.com/smartystreets/goconvey v1.7.2 // indirect
 	github.com/spf13/cobra v1.4.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/objx v0.2.0 // indirect

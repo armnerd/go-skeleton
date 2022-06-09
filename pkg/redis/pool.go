@@ -16,6 +16,12 @@ func GetCache() {
 	host := os.Getenv("CACHE_HOST")
 	port := os.Getenv("CACHE_PORT")
 	pass := os.Getenv("CACHE_PASS")
+	if host == "" {
+		host = "127.0.0.1"
+	}
+	if port == "" {
+		port = "6379"
+	}
 	server := fmt.Sprintf("%s:%s", host, port)
 	pool = &redis.Pool{
 		MaxActive:   100,
