@@ -1,0 +1,90 @@
+definitions:
+  article.Record:
+    properties:
+      author:
+        type: string
+      cover:
+        type: string
+      ctime:
+        type: string
+      id:
+        type: integer
+      intro:
+        type: string
+      raw:
+        type: string
+      timeline:
+        type: integer
+      title:
+        type: string
+      type:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: Golang 脚手架，Go 简单，Go 直接
+  license: {}
+  termsOfService: https://github.com/armnerd/go-skeleton
+  title: go-skeleton
+  version: "1.0"
+paths:
+  /api/article/es/search:
+    post:
+      parameters:
+      - description: 搜索
+        in: query
+        name: search
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/article.Record'
+      summary: 全文检索
+  /api/article/info:
+    post:
+      parameters:
+      - description: 文章 id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/article.Record'
+      summary: 文章详情
+  /api/article/list:
+    post:
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 分类
+        in: query
+        name: category
+        type: integer
+      - description: 时间轴
+        in: query
+        name: timeline
+        type: integer
+      - description: 搜索
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/article.Record'
+      summary: 文章列表
+swagger: "2.0"

@@ -18,7 +18,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// List 文章列表
+// @Summary 文章列表
+// @Produce  json
+// @Param page query int false "页码"
+// @Param category query int false "分类"
+// @Param timeline query int false "时间轴"
+// @Param search query string false "搜索"
+// @Success 200 {object} article.Record "成功"
+// @Router /api/article/list [post]
 func List(c *gin.Context) {
 	// 获取参数
 	page, _ := strconv.Atoi(c.DefaultPostForm("page", "1"))
@@ -50,7 +57,11 @@ func List(c *gin.Context) {
 	response.Succuss(c, data)
 }
 
-// Info 文章详情
+// @Summary 文章详情
+// @Produce  json
+// @Param id query int true "文章 id"
+// @Success 200 {object} article.Record "成功"
+// @Router /api/article/info [post]
 func Info(c *gin.Context) {
 	// 参数验证
 	id := c.DefaultPostForm("id", "")
@@ -70,7 +81,6 @@ func Info(c *gin.Context) {
 	response.Succuss(c, data)
 }
 
-// Add 添加文章
 func Add(c *gin.Context) {
 	// 返回数据
 	response.Succuss(c, "")
@@ -122,7 +132,11 @@ func Sync(c *gin.Context) {
 	response.Succuss(c, all)
 }
 
-// Search 全文检索
+// @Summary 全文检索
+// @Produce  json
+// @Param search query string true "搜索"
+// @Success 200 {object} article.Record "成功"
+// @Router /api/article/es/search [post]
 func Search(c *gin.Context) {
 	search := c.DefaultPostForm("search", "")
 	if search == "" {

@@ -1,0 +1,139 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Golang 脚手架，Go 简单，Go 直接",
+        "title": "go-skeleton",
+        "termsOfService": "https://github.com/armnerd/go-skeleton",
+        "contact": {},
+        "license": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/article/es/search": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "全文检索",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "搜索",
+                        "name": "search",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/article.Record"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/article/info": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "文章详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文章 id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/article.Record"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/article/list": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "文章列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分类",
+                        "name": "category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "时间轴",
+                        "name": "timeline",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "搜索",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/article.Record"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "article.Record": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "cover": {
+                    "type": "string"
+                },
+                "ctime": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "intro": {
+                    "type": "string"
+                },
+                "raw": {
+                    "type": "string"
+                },
+                "timeline": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

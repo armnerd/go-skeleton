@@ -1,10 +1,13 @@
 package route
 
 import (
+	_ "github.com/armnerd/go-skeleton/docs"
 	"github.com/armnerd/go-skeleton/internal/handler/article"
 	"github.com/armnerd/go-skeleton/internal/handler/mail"
 	"github.com/armnerd/go-skeleton/internal/handler/test"
 	"github.com/armnerd/go-skeleton/internal/middleware"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,6 +28,9 @@ func Init() *gin.Engine {
 			"Welcome": "This is go-skeleton, build with Gin and Gorm",
 		})
 	})
+
+	// swagger
+	app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Blog
 	api.POST("/article/list", article.List)                            // 文章列表
