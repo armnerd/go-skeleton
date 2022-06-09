@@ -5,11 +5,17 @@
 ## Run
 
 ```bash
+// 配置
+cp .env.example .env
+
+// 日志
 mkdir runtime
+
+// 构建
 go build main.go
 
 // 获取运行参数
-./main server - h
+./main server -h
 
 // 开启接口服务
 ./main server
@@ -35,3 +41,8 @@ go build main.go
 |   Kafka   |   kafka-go    |   https://github.com/segmentio/kafka-go  |
 |   RabbitMq   |   amqp    |   https://github.com/streadway/amqp  |
 |   Etcd   |   etcd    |   https://github.com/coreos/etcd/clientv3 |
+
+## Undo
+
+* 链路追踪 jaeger / zipkin
+* 单元测试 test

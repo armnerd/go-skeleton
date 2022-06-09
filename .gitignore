@@ -2,4 +2,3 @@
 runtime/
 .idea/
 .env
-go.sum

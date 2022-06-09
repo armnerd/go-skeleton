@@ -1,8 +1,7 @@
 package demo
 
 import (
-	"fmt"
-
+	"github.com/armnerd/go-skeleton/cmd/scripts/common"
 	"github.com/spf13/cobra"
 )
 
@@ -14,17 +13,21 @@ var (
 
 var (
 	hello = &cobra.Command{
-		Use:    "hello",
-		PreRun: func(cmd *cobra.Command, args []string) {},
+		Use: "hello",
+		PreRun: func(cmd *cobra.Command, args []string) {
+			common.Depend()
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return helloHandler()
+			return helloHandler(args)
+		},
+		PostRun: func(cmd *cobra.Command, args []string) {
+			common.Release()
 		},
 	}
 	world = &cobra.Command{
-		Use:    "world",
-		PreRun: func(cmd *cobra.Command, args []string) {},
+		Use: "world",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return worldHandler()
+			return worldHandler(args)
 		},
 	}
 )
@@ -33,14 +36,4 @@ func init() {
 	// 注册子命令
 	Register.AddCommand(hello)
 	Register.AddCommand(world)
-}
-
-func helloHandler() error {
-	fmt.Println("Hello")
-	return nil
-}
-
-func worldHandler() error {
-	fmt.Println("world")
-	return nil
 }
