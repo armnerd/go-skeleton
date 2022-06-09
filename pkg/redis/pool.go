@@ -11,8 +11,8 @@ import (
 // redis连接池
 var pool *redis.Pool
 
-// CreatePool 连接redis
-func CreatePool() {
+// GetCache 获取缓存池
+func GetCache() {
 	host := os.Getenv("CACHE_HOST")
 	port := os.Getenv("CACHE_PORT")
 	pass := os.Getenv("CACHE_PASS")

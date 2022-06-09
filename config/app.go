@@ -21,5 +21,3 @@ func SetAppRoot(cmd string) {
 		AppRoot = strings.Replace(cmd, "/main", "", -1)
 	}
 }
-
-var Enviroment = os.Getenv("ENVIRONMENT")

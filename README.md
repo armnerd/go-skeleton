@@ -7,13 +7,23 @@
 ```bash
 mkdir runtime
 go build main.go
-./main
+
+// 获取运行参数
+./main server - h
+
+// 开启接口服务
+./main server
+
+// 运行脚本
+./main cmd demo hello
+./main cmd demo world
 ```
 
 ## Lib
 
 |   Role   |   Package   |   Link   |
 | ---- | ---- | ---- |
+|   命令   |   cobra       |   https://github.com/spf13/cobra     |
 |   路由   |   Gin       |   https://github.com/gin-gonic/gin     |
 |   配置   |   godotenv  |   https://github.com/joho/godotenv     |
 |   ORM    |   Gorm      |   https://github.com/jinzhu/gorm       |

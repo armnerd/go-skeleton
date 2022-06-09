@@ -13,8 +13,8 @@ import (
 // DB mysql连接池
 var DB *gorm.DB
 
-// ConnectDB 连接数据库
-func ConnectDB() {
+// GetDB 连接数据库
+func GetDB() {
 	DB = connectDbMySQL(
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
