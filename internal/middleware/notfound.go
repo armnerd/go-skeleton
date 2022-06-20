@@ -10,6 +10,5 @@ func NotFound() gin.HandlerFunc {
 			"message": "api not found",
 			"data":    "",
 		})
-		return
 	}
 }
