@@ -1,13 +1,18 @@
 package mysql
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
+	"time"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql" // indirect
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm/logger"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 // DB mysql连接池
@@ -25,12 +30,9 @@ func GetDB() {
 	)
 	maxConnections, _ := strconv.Atoi(os.Getenv("DB_MAX_CONNECTIONS"))
 	openConnections, _ := strconv.Atoi(os.Getenv("DB_MAX_OPEN_CONNECTIONS"))
-	DB.DB().SetMaxOpenConns(maxConnections)
-	DB.DB().SetMaxIdleConns(openConnections)
-	dbLog := os.Getenv("DB_LOG")
-	if dbLog == "true" {
-		DB.LogMode(true)
-	}
+	sqlDB, _ := DB.DB()
+	sqlDB.SetMaxOpenConns(maxConnections)
+	sqlDB.SetMaxIdleConns(openConnections)
 }
 
 // 初始化Mysql db
@@ -45,10 +47,21 @@ func connectDbMySQL(host, port, database, user, pass, charset string) *gorm.DB {
 		charset,
 	)
 
-	db, err := gorm.Open("mysql", dns)
+	db, err := gorm.Open(mysql.Open(dns), &gorm.Config{
+		Logger: NewTraceLogger(logger.Info, time.Second),
+	})
 	if err != nil {
 		log.Fatalf("models.InitDbMySQL err: %v", err)
 	}
-	db.SingularTable(true)
 	return db
+}
+
+// 获取实例
+func Instance(c *gin.Context) *gorm.DB {
+	return DB.WithContext(Gin2Context(c))
+}
+
+// 追加 traceId
+func Gin2Context(c *gin.Context) context.Context {
+	return context.WithValue(context.Background(), "traceId", c.GetString("traceId"))
 }

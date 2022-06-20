@@ -4,7 +4,6 @@ import (
 	_ "github.com/armnerd/go-skeleton/docs"
 	"github.com/armnerd/go-skeleton/internal/handler/article"
 	"github.com/armnerd/go-skeleton/internal/handler/demo"
-	"github.com/armnerd/go-skeleton/internal/handler/mail"
 	"github.com/armnerd/go-skeleton/internal/middleware"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
@@ -16,7 +15,7 @@ import (
 func Init() *gin.Engine {
 	app := gin.New()
 	// 中间件
-	app.Use(gin.Logger(), middleware.Cors(), middleware.RecoverAtLast())
+	app.Use(gin.Logger(), middleware.Cors(), middleware.RecoverAtLast(), middleware.TraceId())
 	// 接口不存在
 	app.NoRoute(middleware.NotFound())
 	// 路由分组
@@ -37,9 +36,6 @@ func Init() *gin.Engine {
 	api.POST("/article/info", article.Info)                            // 文章详情
 	api.POST("/article/add", middleware.AuthRequired(), article.Add)   // 新增文章
 	api.POST("/article/edit", middleware.AuthRequired(), article.Edit) // 编辑文章
-	api.POST("/article/es/sync", article.Sync)                         // 同步文章
-	api.POST("/article/es/search", article.Search)                     // 搜索文章
-	api.POST("/feedback", mail.Add)                                    // 留言
 
 	// Redis
 	api.POST("/cache/set", demo.SetCache)
@@ -48,6 +44,9 @@ func Init() *gin.Engine {
 	// Curl
 	api.GET("/curl/get", demo.CurlGet)
 	api.GET("/curl/post", demo.CurlPost)
+
+	// Log
+	api.GET("/log", demo.Log)
 
 	// Jwt
 	api.GET("/jwt/login", demo.Login)

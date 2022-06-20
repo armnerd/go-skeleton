@@ -1,33 +1,24 @@
 package article
 
 import (
-	"github.com/armnerd/go-skeleton/internal/data/article"
+	"github.com/armnerd/go-skeleton/internal/data"
+	"github.com/gin-gonic/gin"
 )
 
 // List 文章列表
-func List(start int, category int, timeline int, search string) []article.Record {
-	var model = article.Record{}
-	var data = model.GetAll(start, category, timeline, search)
-	return data
-}
-
-// FetchAll 所有文章
-func FetchAll() []article.Record {
-	var model = article.Record{}
-	var data = model.FetchAll()
-	return data
+func List(c *gin.Context, start int, category int, timeline int, search string) ([]data.Article, error) {
+	var model = data.Article{}
+	return model.GetAll(c, start, category, timeline, search)
 }
 
 // Total 文章总数
-func Total(category int, timeline int, search string) float64 {
-	var model = article.Record{}
-	var data = model.GetTotal(category, timeline, search)
-	return data
+func Total(c *gin.Context, category int, timeline int, search string) int64 {
+	var model = data.Article{}
+	return model.GetTotal(c, category, timeline, search)
 }
 
-// Info 文章列表
-func Info(id string) article.Record {
-	var model = article.Record{}
-	var data = model.GetOne(id)
-	return data
+// Info 文章详情
+func Info(c *gin.Context, id string) (data.Article, error) {
+	var model = data.Article{}
+	return model.GetOne(c, id)
 }

@@ -22,7 +22,8 @@ func Depend() {
 
 func Release() {
 	// 关闭 MySQL
-	mysql.DB.Close()
+	sqlDB, _ := mysql.DB.DB()
+	sqlDB.Close()
 	// 关闭 Redis
 	redis.Get().Close()
 }

@@ -1,19 +1,11 @@
 package article
 
 import (
-	"bytes"
-	"context"
-	"encoding/json"
-	"log"
 	"math"
 	"strconv"
-	"strings"
 
 	"github.com/armnerd/go-skeleton/internal/logic/article"
 	"github.com/armnerd/go-skeleton/pkg/response"
-
-	elasticsearch "github.com/elastic/go-elasticsearch/v8"
-	"github.com/elastic/go-elasticsearch/v8/esapi"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,7 +16,7 @@ import (
 // @Param category query int false "分类"
 // @Param timeline query int false "时间轴"
 // @Param search query string false "搜索"
-// @Success 200 {object} article.Record "成功"
+// @Success 200 {object} listResult "成功"
 // @Router /api/article/list [post]
 func List(c *gin.Context) {
 	// 获取参数
@@ -35,13 +27,17 @@ func List(c *gin.Context) {
 
 	// 获取列表
 	start := (page - 1) * 6
-	var list = article.List(start, category, timeline, search)
+	var list, err = article.List(c, start, category, timeline, search)
+	if err != nil {
+		response.Fail(c, response.InternalError)
+		return
+	}
 
 	// 获取总页数
 	var total float64 = 0
-	var num = article.Total(category, timeline, search)
+	var num = article.Total(c, category, timeline, search)
 	if num != 0 {
-		total = math.Ceil(num / 6)
+		total = math.Ceil(float64(num) / 6)
 	}
 
 	// 返回数据
@@ -60,7 +56,7 @@ func List(c *gin.Context) {
 // @Summary 文章详情
 // @Produce  json
 // @Param id query int true "文章 id"
-// @Success 200 {object} article.Record "成功"
+// @Success 200 {object} data.Article "成功"
 // @Router /api/article/info [post]
 func Info(c *gin.Context) {
 	// 参数验证
@@ -71,8 +67,8 @@ func Info(c *gin.Context) {
 	}
 
 	// 获取详情
-	var data = article.Info(id)
-	if data.ID == 0 {
+	data, err := article.Info(c, id)
+	if err != nil {
 		response.Fail(c, response.RecordNotExsit)
 		return
 	}
@@ -81,6 +77,7 @@ func Info(c *gin.Context) {
 	response.Succuss(c, data)
 }
 
+// Add 新增文章
 func Add(c *gin.Context) {
 	// 返回数据
 	response.Succuss(c, "")
@@ -90,141 +87,4 @@ func Add(c *gin.Context) {
 func Edit(c *gin.Context) {
 	// 返回数据
 	response.Fail(c, response.ParamsLost)
-}
-
-// Sync 同步
-func Sync(c *gin.Context) {
-	es, err := elasticsearch.NewDefaultClient()
-	if err != nil {
-		log.Fatalf("Error creating the client: %s", err)
-	}
-
-	var all = article.FetchAll()
-	for _, article := range all {
-		jsonStr, _ := json.Marshal(article)
-		iterm := string(jsonStr)
-
-		req := esapi.IndexRequest{
-			Index:      "article",
-			DocumentID: strconv.Itoa(article.ID),
-			Body:       strings.NewReader(iterm),
-			Refresh:    "true",
-		}
-
-		res, err := req.Do(context.Background(), es)
-		if err != nil {
-			log.Fatalf("Error getting response: %s", err)
-		}
-		defer res.Body.Close()
-
-		if res.IsError() {
-			log.Printf("[%s] Error indexing document ID=%d", res.Status(), article.ID)
-		} else {
-			var r map[string]interface{}
-			if err := json.NewDecoder(res.Body).Decode(&r); err != nil {
-				log.Printf("Error parsing the response body: %s", err)
-			} else {
-				log.Printf("[%s] %s; version=%d", res.Status(), r["result"], int(r["_version"].(float64)))
-			}
-		}
-	}
-
-	response.Succuss(c, all)
-}
-
-// @Summary 全文检索
-// @Produce  json
-// @Param search query string true "搜索"
-// @Success 200 {object} article.Record "成功"
-// @Router /api/article/es/search [post]
-func Search(c *gin.Context) {
-	search := c.DefaultPostForm("search", "")
-	if search == "" {
-		response.Fail(c, response.ParamsLost)
-		return
-	}
-	var r map[string]interface{}
-
-	es, err := elasticsearch.NewDefaultClient()
-	if err != nil {
-		log.Fatalf("Error creating the client: %s", err)
-	}
-
-	// Build the request body.
-	var buf bytes.Buffer
-	query := map[string]interface{}{
-		"query": map[string]interface{}{
-			"multi_match": map[string]interface{}{
-				"query":  search,
-				"fields": [2]string{"Title", "Raw"},
-			},
-		},
-	}
-	if err := json.NewEncoder(&buf).Encode(query); err != nil {
-		log.Fatalf("Error encoding query: %s", err)
-	}
-
-	res, err := es.Search(
-		es.Search.WithContext(context.Background()),
-		es.Search.WithIndex("article"),
-		es.Search.WithBody(&buf),
-		es.Search.WithTrackTotalHits(true),
-		es.Search.WithPretty(),
-	)
-	if err != nil {
-		log.Fatalf("Error getting response: %s", err)
-	}
-	defer res.Body.Close()
-
-	if res.IsError() {
-		var e map[string]interface{}
-		if err := json.NewDecoder(res.Body).Decode(&e); err != nil {
-			log.Fatalf("Error parsing the response body: %s", err)
-		} else {
-			log.Fatalf("[%s] %s: %s",
-				res.Status(),
-				e["error"].(map[string]interface{})["type"],
-				e["error"].(map[string]interface{})["reason"],
-			)
-		}
-	}
-
-	if err := json.NewDecoder(res.Body).Decode(&r); err != nil {
-		log.Fatalf("Error parsing the response body: %s", err)
-	}
-	log.Printf(
-		"[%s] %d hits; took: %dms",
-		res.Status(),
-		int(r["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
-		int(r["took"].(float64)),
-	)
-
-	var items []map[string]interface{}
-	for _, hit := range r["hits"].(map[string]interface{})["hits"].([]interface{}) {
-		one := hit.(map[string]interface{})["_source"].(map[string]interface{})
-		score := hit.(map[string]interface{})["_score"]
-
-		countSplit := strings.Split(one["Raw"].(string), " ")
-		result := ""
-		for _, line := range countSplit {
-			inline := strings.Contains(line, search)
-			if inline {
-				line = strings.Replace(line, "```", "", -1)
-				line = strings.Replace(line, "\n", "", -1)
-				result += strings.Replace(line, search, " <mark>"+search+"</mark> ", -1)
-			}
-		}
-
-		instance := map[string]interface{}{
-			"ID":    one["ID"],
-			"Title": one["Title"],
-			"Hit":   result,
-			"Score": score,
-		}
-
-		items = append(items, instance)
-	}
-
-	// 返回数据
-	response.Succuss(c, items)
 }

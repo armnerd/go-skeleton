@@ -41,13 +41,14 @@ func CurlGet(c *gin.Context) {
 	var url = "http://127.0.0.1:9551"
 	data := map[string]interface{}{}
 	header := map[string]interface{}{}
-	content, err := curl.Get(url, data, header)
+	content, err := curl.Get(c, url, data, header)
 	if err != nil {
 		response.Fail(c, response.RequestFail)
+		return
 	}
 	res := content.Get("Welcome").Value()
 	// info日志
-	syslog.Info("curl get test", "")
+	syslog.Info(c, "curl get test", "")
 	response.Succuss(c, res)
 }
 
@@ -58,13 +59,14 @@ func CurlPost(c *gin.Context) {
 		"id": "95",
 	}
 	header := map[string]interface{}{}
-	content, err := curl.PostForm(url, data, header)
+	content, err := curl.PostForm(c, url, data, header)
 	if err != nil {
 		response.Fail(c, response.RequestFail)
+		return
 	}
 	res := content.Get("data").Get("Author").Value()
 	// debug日志
-	syslog.Debug("curl post test", "")
+	syslog.Debug(c, "curl post test", "")
 	response.Succuss(c, res)
 }
 
@@ -84,4 +86,10 @@ func Login(c *gin.Context) {
 func Auth(c *gin.Context) {
 	user, _ := c.Get("user")
 	response.Succuss(c, user)
+}
+
+// Log 日志
+func Log(c *gin.Context) {
+	syslog.Debug(c, "test", "output")
+	response.Succuss(c, nil)
 }

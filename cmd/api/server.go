@@ -68,7 +68,8 @@ func setup() {
 func run() error {
 	// 关闭 MySQL
 	defer func() {
-		mysql.DB.Close()
+		sqlDB, _ := mysql.DB.DB()
+		sqlDB.Close()
 	}()
 
 	// 关闭 Redis

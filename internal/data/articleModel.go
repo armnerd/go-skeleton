@@ -1,7 +1,7 @@
-package article
+package data
 
-// Record 用户表
-type Record struct {
+// Article 文章表
+type Article struct {
 	ID       int    `gorm:"primary_key;AUTO_INCREMENT"`
 	Title    string `gorm:"type:varchar(255)"`
 	Intro    string `gorm:"type:varchar(255)"`
@@ -14,6 +14,13 @@ type Record struct {
 }
 
 // TableName 声明表名
-func (Record) TableName() string {
+func (Article) TableName() string {
 	return "article"
+}
+
+/*---------------连表查询结果结构体---------------*/
+
+type JoinOtherTable struct {
+	Article
+	OtherColumn string `gorm:"column:other_column"`
 }

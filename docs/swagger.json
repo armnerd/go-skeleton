@@ -9,31 +9,6 @@
         "version": "1.0"
     },
     "paths": {
-        "/api/article/es/search": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "全文检索",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "搜索",
-                        "name": "search",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "成功",
-                        "schema": {
-                            "$ref": "#/definitions/article.Record"
-                        }
-                    }
-                }
-            }
-        },
         "/api/article/info": {
             "post": {
                 "produces": [
@@ -53,7 +28,7 @@
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "$ref": "#/definitions/article.Record"
+                            "$ref": "#/definitions/data.Article"
                         }
                     }
                 }
@@ -95,7 +70,7 @@
                     "200": {
                         "description": "成功",
                         "schema": {
-                            "$ref": "#/definitions/article.Record"
+                            "$ref": "#/definitions/article.listResult"
                         }
                     }
                 }
@@ -103,7 +78,36 @@
         }
     },
     "definitions": {
-        "article.Record": {
+        "article.listResult": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "integer"
+                },
+                "count": {
+                    "type": "integer"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/data.Article"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "search": {
+                    "type": "string"
+                },
+                "timeline": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "number"
+                }
+            }
+        },
+        "data.Article": {
             "type": "object",
             "properties": {
                 "author": {

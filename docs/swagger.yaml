@@ -1,5 +1,24 @@
 definitions:
-  article.Record:
+  article.listResult:
+    properties:
+      category:
+        type: integer
+      count:
+        type: integer
+      list:
+        items:
+          $ref: '#/definitions/data.Article'
+        type: array
+      page:
+        type: integer
+      search:
+        type: string
+      timeline:
+        type: integer
+      total:
+        type: number
+    type: object
+  data.Article:
     properties:
       author:
         type: string
@@ -28,22 +47,6 @@ info:
   title: go-skeleton
   version: "1.0"
 paths:
-  /api/article/es/search:
-    post:
-      parameters:
-      - description: 搜索
-        in: query
-        name: search
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            $ref: '#/definitions/article.Record'
-      summary: 全文检索
   /api/article/info:
     post:
       parameters:
@@ -58,7 +61,7 @@ paths:
         "200":
           description: 成功
           schema:
-            $ref: '#/definitions/article.Record'
+            $ref: '#/definitions/data.Article'
       summary: 文章详情
   /api/article/list:
     post:
@@ -85,6 +88,6 @@ paths:
         "200":
           description: 成功
           schema:
-            $ref: '#/definitions/article.Record'
+            $ref: '#/definitions/article.listResult'
       summary: 文章列表
 swagger: "2.0"
