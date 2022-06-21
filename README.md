@@ -68,12 +68,12 @@ goconvey
 |   命令   |   cobra       |   https://github.com/spf13/cobra     |
 |   路由   |   Gin       |   https://github.com/gin-gonic/gin     |
 |   配置   |   godotenv  |   https://github.com/joho/godotenv     |
-|   ORM    |   Gorm      |   https://github.com/jinzhu/gorm       |
+|   ORM    |   Gorm      |   https://github.com/go-gorm/gorm      |
 |   redis  |   redigo    |   https://github.com/gomodule/redigo   |
 |   Curl   |   goz       |   https://github.com/idoubi/goz        |
 |   Json   |   gjson     |   https://github.com/tidwall/gjson     |
 |   日志   |   logrus    |   https://github.com/sirupsen/logrus   |
-|   鉴权   |   jwt-go    |   https://github.com/dgrijalva/jwt-go  |
+|   鉴权   |   jwt-go    |   https://github.com/golang-jwt/jwt  |
 |   文档   |   gin-swagger    |   https://github.com/swaggo/gin-swagger |
 |   测试   |   goconvey    |   https://github.com/smartystreets/goconvey |
 |   Kafka   |   kafka-go    |   https://github.com/segmentio/kafka-go  |
